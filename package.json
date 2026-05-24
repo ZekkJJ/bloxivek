@@ -1,0 +1,16 @@
+{
+  "name": "bloxive",
+  "version": "3.0.0",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "build:bot": "npm run build -w apps/bot",
+    "build:api": "npm run build -w apps/api",
+    "dev": "npm run dev -w apps/bot",
+    "lint": "tsc --noEmit --workspaces"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
