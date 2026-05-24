@@ -43,8 +43,8 @@ export const registerCommand: Command = {
     
     const identity = await getGlobalIdentity(discordId);
     
-    const citizenNumber = `${nation.currency_name.substring(0, 3).toUpperCase()}-00${Math.floor(Math.random() * 9000) + 1000}`;
-    
+    const prefix = nation.name.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3).toUpperCase() || 'CIT';
+    const citizenNumber = `${prefix}-00${Math.floor(Math.random() * 9000) + 1000}`;
     const newCitizen: Omit<Citizen, '_id'> = {
       guild_id: guildId,
       discord_id: discordId,

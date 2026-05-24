@@ -60,6 +60,17 @@ async function bootstrap() {
       const cmd = Object.values(cmdModule).find((exp: any) => exp && exp.data && exp.data.name) as any;
       
       if (cmd) {
+        // Apply localization
+        const { commandLocales } = await import('./i18n/commandLocales.js');
+        const locales = commandLocales[cmd.data.name];
+        if (locales) {
+          if (locales.nameLocalizations) {
+            cmd.data.setNameLocalizations(locales.nameLocalizations);
+          }
+          if (locales.descriptionLocalizations) {
+            cmd.data.setDescriptionLocalizations(locales.descriptionLocalizations);
+          }
+        }
         client.commands.set(cmd.data.name, cmd);
       }
     }
