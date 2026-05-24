@@ -11,27 +11,35 @@ export const perfilCommand: Command = {
     
   async execute(interaction) {
     const identity = await getGlobalIdentity(interaction.user.id);
-    const locale = identity?.preferred_locale ?? 'es';
-    
-    let robloxText = t('perfil.not_verified', locale);
-    if (identity?.roblox_id) {
-      robloxText = t('perfil.roblox', locale, { roblox_username: identity.roblox_username ?? 'Unknown' });
+    const guildId = interaction.guildId;
+    let locale: 'es' | 'en' = identity?.preferred_locale ?? 'es';
+    let citizen: any = undefined;
+    let nation: any = undefined;
+
+    if (guildId) {
+      const { getCollection, Collections } = await import('../lib/db.js');
+      const nationCol = getCollection(Collections.NATIONS);
+      nation = await nationCol.findOne({ guild_id: guildId });
+      if (nation?.locale) {
+        locale = nation.locale;
+      }
+      
+      const { getCitizen } = await import('../systems/economy.js');
+      citizen = await getCitizen(guildId, interaction.user.id);
     }
-    
-    const pps = identity?.pps ?? 500;
-    
-    const content = `
-# ${t('perfil.title', locale, { username: interaction.user.username })}
 
-**${t('perfil.global_section', locale)}**
-- ${robloxText}
-- ${t('perfil.pps', locale, { pps })}
-
-*(La integración local de ciudadanía y economía se agregará en próximas fases)*
-`;
+    const { buildProfileCard } = await import('../builders/profileCard.js');
+    const embed = buildProfileCard(
+      identity as any, 
+      locale, 
+      interaction.user.username, 
+      interaction.user.displayAvatarURL(), 
+      citizen, 
+      nation
+    );
 
     await interaction.reply({
-      content,
+      embeds: [embed],
       flags: MessageFlags.Ephemeral,
     });
   },

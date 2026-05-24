@@ -38,7 +38,7 @@ export const interactionCreateEvent: Event<Events.InteractionCreate> = {
           return;
         }
 
-        if (robloxUser.description && robloxUser.description.includes(session.code)) {
+        if (robloxUser.description && robloxUser.description.trim().includes(session.code)) {
           // Success
           const { linkRobloxAccount } = await import('../systems/identity.js');
           await linkRobloxAccount(discordId, robloxUser.id.toString(), robloxUser.name, null);
@@ -50,8 +50,12 @@ export const interactionCreateEvent: Event<Events.InteractionCreate> = {
           });
         } else {
           // Failure
+          const errorMsg = (locale === 'es') 
+            ? "Código no encontrado. **Importante:** Roblox cachea los perfiles por hasta 5 minutos. Si acabas de guardar, espera unos minutos y vuelve a intentarlo."
+            : "Code not found. **Important:** Roblox caches profiles for up to 5 minutes. If you just saved, please wait a few minutes and try again.";
+          
           await interaction.followUp({
-            embeds: [errorContainer(t('common.error', locale) + ': Code not found in description.')],
+            embeds: [errorContainer(errorMsg)],
           });
         }
         return;

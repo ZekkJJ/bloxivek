@@ -50,6 +50,12 @@
   "perfil.status": "Status: **{{status}}**",
   "perfil.arrested": "⛓️ **DETAINED**",
   "perfil.citizen_number": "Citizen #: **{{number}}**",
+  "perfil.sanctions": "Platform Sanctions",
+  "perfil.citizen_id": "Citizen ID",
+  "perfil.company_role": "Company Role: **{{role}}**",
+  "perfil.active_arrest": "ACTIVE ARREST",
+  "perfil.not_citizen": "You are not a citizen of this nation.",
+  "vincular.not_found": "Code not found. **Important:** Roblox caches profiles for up to 5 minutes. If you just saved, please wait a few minutes and try again.",
   
   "registro.title": "📋 Citizenship Registration",
   "registro.success": "✅ Welcome to **{{nation_name}}**! Your citizen number is **{{citizen_number}}**.",
